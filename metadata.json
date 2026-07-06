@@ -1,6 +1,6 @@
 {
   "name": "Luminaq",
-  "description": "",
+  "description": "Хурдан бичих чадвараа хөгжүүлэх уралдаант тоглоом. Үг, өгүүлбэрийг алдаагүй, хурдан бичиж уралдаарай.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
