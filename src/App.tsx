@@ -736,10 +736,19 @@ export default function App() {
                       className={`absolute left-0 top-0 bottom-0 bg-gradient-to-r ${currentAvatarInfo.color} opacity-10 transition-all duration-300 ease-out`}
                     />
 
-                    {/* Animated Avatar */}
+                    {/* Animated Avatar with Spring Positioning and Dynamic Racing Vibration */}
                     <motion.div
-                      style={{ left: `calc(${playerProgress}% - 28px)` }}
-                      className="absolute w-10 h-10 flex items-center justify-center text-2xl transition-all duration-300 ease-out"
+                      animate={{
+                        left: `calc(${playerProgress}% - 28px)`,
+                        y: status === "racing" && playerProgress > 0 && playerProgress < 100 ? [0, -3, 0] : 0,
+                        rotate: status === "racing" && playerProgress > 0 && playerProgress < 100 ? [-3, 3, -3] : 0
+                      }}
+                      transition={{
+                        left: { type: "spring", stiffness: 90, damping: 15, mass: 0.8 },
+                        y: { repeat: Infinity, duration: 0.35, ease: "easeInOut" },
+                        rotate: { repeat: Infinity, duration: 0.25, ease: "easeInOut" }
+                      }}
+                      className="absolute w-10 h-10 flex items-center justify-center text-2xl"
                     >
                       <span className="relative">
                         {currentAvatarInfo.emoji}
@@ -785,13 +794,28 @@ export default function App() {
                           className={`absolute left-0 top-0 bottom-0 bg-gradient-to-r ${bot.color} opacity-5 transition-all duration-300 ease-out`}
                         />
 
-                        {/* Avatar */}
-                        <div
-                          style={{ left: `calc(${bot.progress}% - 24px)` }}
-                          className="absolute w-8 h-8 flex items-center justify-center text-xl transition-all duration-300 ease-out"
+                        {/* Animated Competitor Avatar with Dynamic Racing Motion */}
+                        <motion.div
+                          animate={{
+                            left: `calc(${bot.progress}% - 24px)`,
+                            y: status === "racing" && !bot.isFinished && bot.progress > 0 ? [0, -2, 0] : 0,
+                            rotate: status === "racing" && !bot.isFinished && bot.progress > 0 ? [-3, 3, -3] : 0
+                          }}
+                          transition={{
+                            left: { type: "spring", stiffness: 75, damping: 14, mass: 0.9 },
+                            y: { repeat: Infinity, duration: 0.4, ease: "easeInOut" },
+                            rotate: { repeat: Infinity, duration: 0.3, ease: "easeInOut" }
+                          }}
+                          className="absolute w-8 h-8 flex items-center justify-center text-xl"
                         >
-                          {bot.emoji}
-                        </div>
+                          <span className="relative">
+                            {bot.emoji}
+                            {/* Wind drift effect for fast moving competitor bots */}
+                            {bot.speedWPM >= 40 && status === "racing" && !bot.isFinished && bot.progress > 1 && (
+                              <span className="absolute -left-2 top-1/2 -translate-y-1/2 text-[10px] opacity-75 animate-pulse">💨</span>
+                            )}
+                          </span>
+                        </motion.div>
 
                         {/* Finish line */}
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs opacity-40">
